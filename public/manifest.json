@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Hello W Bookings",
+  "name": "Hello World Bookings",
   "icons": [
     {
       "src": "favicon.ico",
