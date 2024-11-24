@@ -18,6 +18,9 @@ export default class About extends Component {
             textAlign: "center",
           }}
         >
+           <Row className="justify-content-center  md-8 mt-5 mb-5 p-6 rounded shadow">
+          <Col md={10} className="justify-content-center">
+          
           <Row className="m-5 p-5 shadow">
             <h1>We are Hello World Bookings</h1>
             <p>
@@ -48,11 +51,13 @@ export default class About extends Component {
               hassle-free travel planning!
             </p>
           </Row>
+          </Col>
+          </Row>
         </div>
 
         {/* Contact Us Form */}
-        <Row className="justify-content-center mt-0 mb-5 p-6 rounded shadow bg-black">
-          <Col md={8}>
+        <Row className="justify-content-center  md-8 mt-5 mb-5 p-6 rounded shadow">
+          <Col md={6}>
             <h2 className="text-center mb-4">Contact Us</h2>
             <Form>
               <Form.Group controlId="formBasicEmail">
