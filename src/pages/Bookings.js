@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Row, Col } from "react-bootstrap";
 import bgImg from "../assets/maldives.jpg";
 
 export default class Bookings extends Component {
@@ -25,41 +25,41 @@ export default class Bookings extends Component {
   render() {
     return (
       <div
-        style={{
-          backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${bgImg})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          color: "#fff",
-          //height: "100vh",
-          padding: "250px 0",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          textAlign: "center",
-        }}
+      style={{
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${bgImg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        color: "#fff",
+        padding: "400px 0",
+        textAlign: "center",
+    }}
       >
-        <div style={{ width: "100%", maxWidth: "1000px", padding: "20px" }}>
-          <h1>Check Your Booking Details</h1>
-          <Form
-            className="m-4 p-4 rounded shadow"
-            onSubmit={this.handleSubmit}
-          >
-            <Form.Group controlId="bookingData">
-              <Form.Control
-                type="text"
-                placeholder="Enter your booking number"
-              />
-            </Form.Group>
-            {this.state.error && (
-              <p style={{ color: "red", marginTop: "10px" }}>
-                {this.state.error}
-              </p>
-            )}
-            <Button variant="dark" type="submit" className="mt-3">
-              GO
-            </Button>
-          </Form>
-        </div>
+        <Row>
+          <Col md={6} className="d-flex align-items-center justify-content-center" >
+            <h1>CHECK</h1>
+            <p>Your Booking Details</p>
+          </Col>
+          <Col md={4} className="p-6 rounded shadow">
+            <Form
+              onSubmit={this.handleSubmit}
+            >
+              <Form.Group controlId="bookingData">
+                <Form.Control
+                  type="text"
+                  placeholder="Booking confirmation number"
+                />
+              </Form.Group>
+              {this.state.error && (
+                <p style={{ color: "red", marginTop: "10px" }}>
+                  {this.state.error}
+                </p>
+              )}
+              <Button variant="dark" type="submit" className="mt-3">
+                GO
+              </Button>
+            </Form>
+          </Col>
+        </Row>
       </div>
     );
   }
