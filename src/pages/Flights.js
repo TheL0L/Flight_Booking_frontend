@@ -11,10 +11,29 @@ export default class Flights extends Component {
       departureDate: "",
       returnDate: "",
       passengers: 1,
-      travelClass: "economy",
-      locations: [],
-      error: "", // For error handling
+      locations: [], // Locations will be loaded dynamically
+      error: "",
+      searchResults: [], // To hold the search results
     };
+  }
+
+  componentDidMount() {
+    // Fetch locations from the API
+    fetch("http://127.0.0.1:8000/api/flights/locations/")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to load locations");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Access the 'locations' property and update the state
+        this.setState({ locations: data.locations });
+      })
+      .catch((error) => {
+        console.error("Error fetching locations:", error);
+        this.setState({ error: "Failed to load locations. Try again later." });
+      });
   }
 
   handleChange = (event) => {
@@ -24,14 +43,28 @@ export default class Flights extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Form submitted:", this.state);
+    const { from, to, departureDate, returnDate, passengers } = this.state;
+
+    // Basic validation
+    if (!from || !to || !departureDate || from === to) {
+      this.setState({ error: "Please provide valid search criteria." });
+      return;
+    }
+
+    const searchPayload = {
+      departure: from,
+      destination: to,
+      departure_time: departureDate,
+      arrival_time: returnDate || null, // Optional field
+      min_seats: passengers,
+    };
 
     fetch("http://127.0.0.1:8000/api/flights/search/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(this.state),
+      body: JSON.stringify(searchPayload),
     })
       .then((response) => {
         if (!response.ok) {
@@ -40,7 +73,7 @@ export default class Flights extends Component {
         return response.json();
       })
       .then((data) => {
-        console.log("Search results:", data);
+        this.setState({ searchResults: data, error: "" });
       })
       .catch((error) => {
         console.error("Error submitting form:", error);
@@ -51,7 +84,7 @@ export default class Flights extends Component {
   };
 
   render() {
-    const { locations, error } = this.state;
+    const { locations, error, searchResults } = this.state;
     return (
       <div
         style={{
@@ -64,12 +97,24 @@ export default class Flights extends Component {
         }}
       >
         <Row>
-          <Col
-            md={6}
-            className="d-flex align-items-center justify-content-center"
-          >
+          <Col md={6}>
             <h1>FLIGHTS</h1>
-            <p>Here you can find all the flights available for booking.</p>
+            <p>Find the best flights for your trip.</p>
+            {searchResults.length > 0 && (
+              <div className="mt-4">
+                <h4>Search Results</h4>
+                <ul>
+                  {searchResults.map((flight, index) => (
+                    <li key={index}>
+                      {flight.flight_number}: {flight.departure} to{" "}
+                      {flight.destination} - {flight.departure_time} to{" "}
+                      {flight.arrival_time} ({flight.available_seats} seats
+                      available)
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </Col>
           <Col md={4} className="p-6 rounded shadow">
             <Form onSubmit={this.handleSubmit}>
@@ -115,7 +160,7 @@ export default class Flights extends Component {
                 />
               </Form.Group>
               <Form.Group controlId="returnDate" className="mb-3">
-                <Form.Label>Return Date</Form.Label>
+                <Form.Label>Return Date (Optional)</Form.Label>
                 <Form.Control
                   type="date"
                   name="returnDate"
@@ -132,18 +177,6 @@ export default class Flights extends Component {
                   value={this.state.passengers}
                   onChange={this.handleChange}
                 />
-              </Form.Group>
-              <Form.Group controlId="travelClass" className="mb-3">
-                <Form.Label>Class</Form.Label>
-                <Form.Select
-                  name="travelClass"
-                  value={this.state.travelClass}
-                  onChange={this.handleChange}
-                >
-                  <option value="economy">Economy</option>
-                  <option value="business">Business</option>
-                  <option value="first">First Class</option>
-                </Form.Select>
               </Form.Group>
               <Button variant="dark" type="submit" className="w-100">
                 Search Flights
