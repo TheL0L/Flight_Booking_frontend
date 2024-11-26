@@ -1,5 +1,4 @@
 import "./App.css";
-import FlightList from "./components/FlightList";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "./components/Header";
@@ -9,7 +8,6 @@ function App() {
   return (
     <div>
       <Header />
-      {/* <FlightList /> */}
       <Footer />
     </div>
   );
