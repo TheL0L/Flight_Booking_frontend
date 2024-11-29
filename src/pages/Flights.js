@@ -38,7 +38,23 @@ export default class Flights extends Component {
 
   handleChange = (event) => {
     const { name, value } = event.target;
-    this.setState({ [name]: value });
+    const today = new Date().setHours(0, 0, 0, 0); // Get today's date without time
+    let error = "";
+
+    if (name === "departureDate" && value < today) {
+      error = "Departure date cannot be in the past.";
+    }
+
+    if (name === "returnDate") {
+      const { departureDate } = this.state;
+      if (value < today) {
+        error = "Return date cannot be in the past.";
+      } else if (departureDate && value < departureDate) {
+        error = "Return date cannot be before the departure date.";
+      }
+    }
+
+    this.setState({ [name]: value, error });
   };
 
   handleSubmit = (event) => {
@@ -157,6 +173,7 @@ export default class Flights extends Component {
                   name="departureDate"
                   value={this.state.departureDate}
                   onChange={this.handleChange}
+                  min={new Date().toISOString().split("T")[0]} // Disable past dates
                 />
               </Form.Group>
               <Form.Group controlId="returnDate" className="mb-3">
@@ -166,8 +183,13 @@ export default class Flights extends Component {
                   name="returnDate"
                   value={this.state.returnDate}
                   onChange={this.handleChange}
+                  min={
+                    this.state.departureDate ||
+                    new Date().toISOString().split("T")[0]
+                  } // Disable dates before departure date or today
                 />
               </Form.Group>
+
               <Form.Group controlId="passengers" className="mb-3">
                 <Form.Label>Passengers</Form.Label>
                 <Form.Control
