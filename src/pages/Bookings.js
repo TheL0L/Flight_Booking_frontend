@@ -69,6 +69,7 @@ export default class Bookings extends Component {
             <p>Your Booking Details</p>
           </Col>
           <Col md={4} className="p-6 rounded shadow">
+          <p></p><p></p>
             <Form onSubmit={this.handleSubmit}>
               <Form.Group controlId="bookingData">
                 <Form.Control
@@ -81,7 +82,7 @@ export default class Bookings extends Component {
                   {this.state.error}
                 </p>
               )}
-              <Button variant="dark" type="submit" className="mt-3">
+              <Button variant="dark" type="submit" className="mb-3 mt-5">
                 GO
               </Button>
             </Form>
