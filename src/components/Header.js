@@ -10,11 +10,7 @@ import {
     NavbarToggle, 
     Form } from "react-bootstrap";
 import logo from "../assets/whitelogo.png";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Home from "../pages/Home";
-import About from "../pages/About";
-import Flights from "../pages/Flights";
-import Bookings from "../pages/Bookings";
+
 
 export default class Header extends Component {
     render() {
@@ -52,14 +48,6 @@ export default class Header extends Component {
                     
             </Container>
         </Navbar>
-        <Router>    
-            <Routes>
-                <Route path="/" element ={<Home/>}/>
-                <Route path="/about" element ={ <About/>}/>
-                <Route path="/flights" element={<Flights/>}/>
-                <Route path="/bookings" element={<Bookings/>}/>     
-            </Routes>
-        </Router>
         </>
         );
     }
