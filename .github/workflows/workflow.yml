@@ -44,5 +44,5 @@ jobs:
       run: |
         git fetch origin
         git checkout production
-        git merge master --no-ff -m "Sync master with production"
+        git merge master --no-ff --allow-unrelated-histories -m "Sync master with production"
         git push origin production
