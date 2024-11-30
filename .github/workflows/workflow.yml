@@ -1,9 +1,12 @@
-name: Test and Merge to Production
+name: Test and Deploy to Production
 
 on:
+  push:
+    branches:
+      - master
   pull_request:
     branches:
-      - production
+      - master
 
 jobs:
   test:
@@ -24,7 +27,7 @@ jobs:
     - name: Run tests
       run: npm test
 
-  merge:
+  deploy:
     needs: test
     runs-on: ubuntu-latest
     if: success()
@@ -37,8 +40,9 @@ jobs:
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
 
-    - name: Merge to Production
+    - name: Push changes to production
       run: |
+        git fetch origin
         git checkout production
-        git merge master --no-ff --commit-message "Merge successful tests from master"
+        git merge master --no-ff -m "Sync master with production"
         git push origin production
